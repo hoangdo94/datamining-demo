@@ -1,0 +1,10 @@
+#page-navi {
+	text-align: center;
+}
+.product-name {
+	text-align: center;
+	white-space: nowrap;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

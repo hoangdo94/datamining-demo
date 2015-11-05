@@ -1,0 +1,74 @@
+<div class="row">
+	<div class="col-md-3 col-sm-6">
+		<div class="list-group" id="category-list">
+			<a href="/" class="list-group-item">All Categories</a>
+			{{#each categories}}
+				<a href="/?category={{inc @index}}" class="list-group-item">{{category}}</a>
+			{{/each}}
+		</div>
+	</div>
+	<div class="col-md-9 col-sm-6">
+		<b>{{itemCount}}</b> Products
+		<hr>
+		<!-- <ul>
+			{{#each products}}
+				<li>{{product_id}} - {{name}} - {{price}}</li>
+			{{/each}}
+		</ul> -->
+		{{#each products}}
+			<div class="col-md-4 col-sm-12">
+				<div class="thumbnail" data-product-id="{{product_id}}" title="{{name}}">
+      				<img src="img/no-thumbnail.png" alt="{{name}}">
+      				<div class="caption">
+        				<h4 class="product-name">{{name}}</h4>
+        				<p style="text-align: center;">
+        					<a class="btn btn-default">${{price}}</a> <a class="btn btn-success">Add to Cart</a>
+        				</p>
+      				</div>
+    			</div>
+			</div>
+		{{/each}}
+		<div style="clear:both;"></div>
+		<hr>
+		<div id="page-navi">
+			<a id="btn-prev" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span> Prev</a>&nbsp;&nbsp;
+			<b>Page <input id="nav-page-num" type="number" value="{{currentPage}}" style="width: 40px"/>/{{totalPage}}</b>&nbsp;&nbsp;
+			<a id="btn-next" class="btn btn-primary">Next <span class="glyphicon glyphicon-chevron-right"></span></a>
+		</div>
+	</div> 
+</div>
+<script type="text/javascript">
+	
+	var categoryIndex = {{category}};
+	var currentPage = {{currentPage}};
+	var totalPage = {{totalPage}};
+
+	var navUrl = (categoryIndex > 0)?('category=' + categoryIndex + '&page='):'page=';
+	{{#if searchTerm}}
+		navUrl = ('/?search={{searchTerm}}&' + navUrl);
+	{{else}}
+		navUrl = '/?' + navUrl;
+	{{/if}}
+
+	$('#category-list .list-group-item:nth-child('+(categoryIndex+1)+')').addClass('active');
+	if (currentPage <= 1) {
+		$('#btn-prev').addClass('disabled').prop('disabled', true);
+	} else {
+		$('#btn-prev').attr('href', navUrl + (currentPage - 1));
+	}
+	if (currentPage >= totalPage) {
+		$('#btn-next').addClass('disabled').prop('disabled', true);
+	} else {
+		$('#btn-next').attr('href', navUrl + (currentPage + 1));
+	}
+
+	$('#nav-page-num').change(function() {
+		var page = $(this).val();
+		console.log(page);
+		if (page < 1) page = 1;
+		if (page > totalPage) page = totalPage;
+		if (page !== currentPage) {
+			window.location.href = navUrl + page;
+		}
+	})
+</script>
